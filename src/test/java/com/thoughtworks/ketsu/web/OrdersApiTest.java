@@ -110,4 +110,18 @@ public class OrdersApiTest extends ApiSupport {
         Map<String, Object> map = response.readEntity(Map.class);
         assertThat(map.get("uri").toString().contains("/users/1/orders/1/payment"), is(true));
     }
+
+    @Test
+    public void should_return_201_and_uri_when_create_payment() throws Exception {
+        Order mockOrder = mock(Order.class);
+        Payment payment = new Payment(mockOrder);
+        when(orders.findById(anyInt())).thenReturn(Optional.of(mockOrder));
+        when(mockOrder.createPayment(anyMap())).thenReturn(payment);
+        when(mockOrder.getOwner()).thenReturn(user);
+        when(mockOrder.getId()).thenReturn(Long.valueOf("1"));
+
+        Response response = post("/users/1/orders/1/payment", new HashMap<>());
+        assertThat(response.getStatus(), is(201));
+        assertThat(response.getLocation().toString().contains("users/1/orders/1/payment"), is(true));
+    }
 }

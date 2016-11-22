@@ -4,12 +4,13 @@ import com.sun.org.apache.xpath.internal.operations.Or;
 import com.thoughtworks.ketsu.domain.order.Order;
 import com.thoughtworks.ketsu.domain.order.Payment;
 import com.thoughtworks.ketsu.domain.user.User;
+import com.thoughtworks.ketsu.web.jersey.Routes;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.Map;
 import java.util.Optional;
 
 public class OrderApi {
@@ -36,5 +37,16 @@ public class OrderApi {
         if(!payment.isPresent())
             throw new NotFoundException("payment not exist");
         return payment.get();
+    }
+
+    @POST
+    @Path("payment")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createPayment(Map<String, Object>info,
+                                  @Context Routes routes){
+
+        Payment payment = order.createPayment(info);
+
+        return Response.status(201).location(routes.paymentUrl(order)).build();
     }
 }

@@ -46,4 +46,8 @@ public class Order implements Record{
     public Optional<Payment> findPayment(){
         return null;
     }
+
+    public Payment createPayment(Map<String, Object>info){
+        return null;
+    }
 }

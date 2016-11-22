@@ -29,4 +29,6 @@
 - /users/{uid}/orders/{oid}/payment get not found 404 -5min 4min
                                         success  200 -5min 5min
                                         
--
+- /users/{uid}/orders/{oid}/payment post success 201 -5min  5min
+
+
