@@ -31,8 +31,13 @@
                                         
 - /users/{uid}/orders/{oid}/payment post success 201 -5min  5min
 
--/users/{uid}/orders/{oid}/refundRequest/{requestId} get not found 404 -5min 5min
+-/users/{uid}/orders/{oid}/refundRequests/{requestId} get not found 404 -5min 5min
                                                          success 200 -5min 4min
                                                          
 
-
+-/users/{uid}/orders/{oid}/refundRequests post success 201 -5min 5min
+                                               invalid parameter 400 -5min 3min
+                                              
+                                              
+                                               
+                                               

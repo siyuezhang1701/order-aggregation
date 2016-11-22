@@ -29,6 +29,7 @@ import static org.mockito.Mockito.when;
 public class OrdersApiTest extends ApiSupport {
 
     private User user;
+    private Order mockOrder;
 
     @Override
     @Before
@@ -37,6 +38,9 @@ public class OrdersApiTest extends ApiSupport {
         user = new User(1, "xxx@xxx.com");
         when(currentUser.getCurrentUser()).thenReturn(user);
         when(users.findById(anyInt())).thenReturn(Optional.of(user));
+        mockOrder = mock(Order.class);
+        when(mockOrder.getOwner()).thenReturn(user);
+        when(mockOrder.getId()).thenReturn(Long.valueOf("1"));
         super.setUp();
     }
 
@@ -89,7 +93,6 @@ public class OrdersApiTest extends ApiSupport {
 
     @Test
     public void should_return_404_when_not_find_payment() throws Exception {
-        Order mockOrder = mock(Order.class);
         when(orders.findById(anyInt())).thenReturn(Optional.of(mockOrder));
         when(mockOrder.findPayment()).thenReturn(Optional.empty());
 
@@ -99,12 +102,9 @@ public class OrdersApiTest extends ApiSupport {
 
     @Test
     public void should_return_detail_when_find_payment() throws Exception {
-        Order mockOrder = mock(Order.class);
         Payment payment = new Payment(mockOrder);
         when(orders.findById(anyInt())).thenReturn(Optional.of(mockOrder));
         when(mockOrder.findPayment()).thenReturn(Optional.of(payment));
-        when(mockOrder.getOwner()).thenReturn(user);
-        when(mockOrder.getId()).thenReturn(Long.valueOf("1"));
 
         Response response = get("/users/1/orders/1/payment");
         assertThat(response.getStatus(), is(200));
@@ -114,12 +114,9 @@ public class OrdersApiTest extends ApiSupport {
 
     @Test
     public void should_return_201_and_uri_when_create_payment() throws Exception {
-        Order mockOrder = mock(Order.class);
         Payment payment = new Payment(mockOrder);
         when(orders.findById(anyInt())).thenReturn(Optional.of(mockOrder));
         when(mockOrder.createPayment(anyMap())).thenReturn(payment);
-        when(mockOrder.getOwner()).thenReturn(user);
-        when(mockOrder.getId()).thenReturn(Long.valueOf("1"));
 
         Response response = post("/users/1/orders/1/payment", new HashMap<>());
         assertThat(response.getStatus(), is(201));
@@ -128,7 +125,6 @@ public class OrdersApiTest extends ApiSupport {
 
     @Test
     public void should_return_404_when_not_find_refund_request() throws Exception {
-        Order mockOrder = mock(Order.class);
         when(orders.findById(anyInt())).thenReturn(Optional.of(mockOrder));
         when(mockOrder.findRefundRequest(anyInt())).thenReturn(Optional.empty());
 
@@ -138,16 +134,32 @@ public class OrdersApiTest extends ApiSupport {
 
     @Test
     public void should_return_detail_when_find_refund_request() throws Exception {
-        Order mockOrder = mock(Order.class);
         RefundRequest refundRequest = new RefundRequest(1, mockOrder);
         when(orders.findById(anyInt())).thenReturn(Optional.of(mockOrder));
         when(mockOrder.findRefundRequest(anyInt())).thenReturn(Optional.of(refundRequest));
-        when(mockOrder.getOwner()).thenReturn(user);
-        when(mockOrder.getId()).thenReturn(Long.valueOf("1"));
 
         Response response = get("/users/1/orders/1/refundRequests/1");
         assertThat(response.getStatus(), is(200));
         Map<String, Object> map = response.readEntity(Map.class);
         assertThat(map.get("uri").toString().contains("/users/1/orders/1/refundRequests/1"), is(true));
+    }
+
+    @Test
+    public void should_return_201_when_create_refund_request() throws Exception {
+        RefundRequest refundRequest = new RefundRequest(1, mockOrder);
+        when(orders.findById(anyInt())).thenReturn(Optional.of(mockOrder));
+        when(mockOrder.createRefundRequest(anyMap(), any(Order.class))).thenReturn(refundRequest);
+
+        Response response = post("/users/1/orders/1/refundRequests", TestHelper.refundRequest());
+        assertThat(response.getStatus(), is(201));
+        assertThat(response.getLocation().toString().contains("/users/1/orders/1/refundRequests/1"), is(true));
+    }
+
+    @Test
+    public void should_return_400_when_create_refund_request_with_invalid_parameter() throws Exception {
+        when(orders.findById(anyInt())).thenReturn(Optional.of(mockOrder));
+
+        Response response = post("/users/1/orders/1/refundRequests", new HashMap<>());
+        assertThat(response.getStatus(), is(400));
     }
 }

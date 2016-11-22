@@ -37,4 +37,15 @@ public class TestHelper {
             }});
         }};
     }
+
+    public static Map<String, Object> refundRequest(){
+        return new HashMap<String, Object>(){{
+            put("items", new ArrayList<Map<String, Object>>(){{
+                add(new HashMap<String, Object>(){{
+                    put("products", "1");
+                    put("quantity", 2);
+                }});
+            }});
+        }};
+    }
 }

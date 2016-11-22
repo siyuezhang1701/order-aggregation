@@ -5,6 +5,7 @@ import com.thoughtworks.ketsu.domain.order.Order;
 import com.thoughtworks.ketsu.domain.order.Payment;
 import com.thoughtworks.ketsu.domain.order.RefundRequest;
 import com.thoughtworks.ketsu.domain.user.User;
+import com.thoughtworks.ketsu.util.Validators;
 import com.thoughtworks.ketsu.web.jersey.Routes;
 
 import javax.ws.rs.*;
@@ -13,6 +14,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Map;
 import java.util.Optional;
+
+import static com.thoughtworks.ketsu.util.Validators.all;
+import static com.thoughtworks.ketsu.util.Validators.fieldNotEmpty;
+import static com.thoughtworks.ketsu.util.Validators.validate;
 
 public class OrderApi {
     private User user;
@@ -60,5 +65,20 @@ public class OrderApi {
         if(!refundRequest.isPresent())
             throw new NotFoundException("refund request not exist");
         return refundRequest.get();
+    }
+
+    @POST
+    @Path("refundRequests")
+    public Response createRefundRequest(Map<String, Object>info,
+                                        @Context Routes routes){
+
+        Validators.Validator userValidator =
+                all(fieldNotEmpty("items", "items is required"));
+
+        validate(userValidator, info);
+
+        RefundRequest refundRequest = order.createRefundRequest(info, order);
+
+        return Response.status(201).location(routes.refundRequestURL(refundRequest)).build();
     }
 }

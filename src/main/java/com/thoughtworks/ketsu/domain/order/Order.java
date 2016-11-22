@@ -54,4 +54,8 @@ public class Order implements Record{
     public Optional<RefundRequest> findRefundRequest(long requsetId){
         return null;
     }
+
+    public RefundRequest createRefundRequest(Map<String, Object>info, Order order){
+        return null;
+    }
 }
