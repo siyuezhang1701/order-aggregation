@@ -1,6 +1,7 @@
 package com.thoughtworks.ketsu.web;
 
 import com.thoughtworks.ketsu.domain.order.Order;
+import com.thoughtworks.ketsu.domain.order.Payment;
 import com.thoughtworks.ketsu.domain.user.User;
 import com.thoughtworks.ketsu.support.ApiSupport;
 import com.thoughtworks.ketsu.support.ApiTestRunner;
@@ -19,6 +20,7 @@ import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
@@ -82,5 +84,30 @@ public class OrdersApiTest extends ApiSupport {
         assertThat(response.getStatus(), is(200));
         List<Map> list = response.readEntity(List.class);
         assertThat(list.size(), is(1));
+    }
+
+    @Test
+    public void should_return_404_when_not_find_payment() throws Exception {
+        Order mockOrder = mock(Order.class);
+        when(orders.findById(anyInt())).thenReturn(Optional.of(mockOrder));
+        when(mockOrder.findPayment()).thenReturn(Optional.empty());
+
+        Response response = get("/users/1/orders/1/payment");
+        assertThat(response.getStatus(), is(404));
+    }
+
+    @Test
+    public void should_return_detail_when_find_payment() throws Exception {
+        Order mockOrder = mock(Order.class);
+        Payment payment = new Payment(mockOrder);
+        when(orders.findById(anyInt())).thenReturn(Optional.of(mockOrder));
+        when(mockOrder.findPayment()).thenReturn(Optional.of(payment));
+        when(mockOrder.getOwner()).thenReturn(user);
+        when(mockOrder.getId()).thenReturn(Long.valueOf("1"));
+
+        Response response = get("/users/1/orders/1/payment");
+        assertThat(response.getStatus(), is(200));
+        Map<String, Object> map = response.readEntity(Map.class);
+        assertThat(map.get("uri").toString().contains("/users/1/orders/1/payment"), is(true));
     }
 }

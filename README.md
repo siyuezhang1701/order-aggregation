@@ -26,4 +26,7 @@
                             
 - /users/{uid}/orders   get success 200 -5min 4min
 
-- /users/{uid}/orders/{oid}/payment get not found 404
+- /users/{uid}/orders/{oid}/payment get not found 404 -5min 4min
+                                        success  200 -5min 5min
+                                        
+-

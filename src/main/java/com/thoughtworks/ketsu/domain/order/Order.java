@@ -7,12 +7,14 @@ import com.thoughtworks.ketsu.web.jersey.Routes;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class Order implements Record{
     private long id;
     private List<OrderItem> orderItems;
     private double totalPrice;
     private User owner;
+    private Payment payment;
 
     public Order(long id, User owner) {
         this.id = id;
@@ -34,5 +36,14 @@ public class Order implements Record{
 
     public long getId() {
         return id;
+    }
+
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public Optional<Payment> findPayment(){
+        return null;
     }
 }

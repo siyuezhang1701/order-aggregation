@@ -2,11 +2,13 @@ package com.thoughtworks.ketsu.web.jersey;
 
 
 import com.thoughtworks.ketsu.domain.order.Order;
+import com.thoughtworks.ketsu.domain.order.Payment;
 import com.thoughtworks.ketsu.domain.product.Product;
 import com.thoughtworks.ketsu.domain.user.User;
 
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
+import java.util.Map;
 
 public class Routes {
 
@@ -26,6 +28,11 @@ public class Routes {
 
     public URI orderUrl(User user, Order order) {
         return URI.create(String.format("%susers/%s/orders/%s", baseUri, user.getId(), order.getId()));
+
+    }
+
+    public URI paymentUrl(Order order) {
+        return URI.create(String.format("%susers/%s/orders/%s/payment", baseUri, order.getOwner().getId(), order.getId()));
 
     }
 }
