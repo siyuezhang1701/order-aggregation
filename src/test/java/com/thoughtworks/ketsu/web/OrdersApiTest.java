@@ -4,18 +4,21 @@ import com.thoughtworks.ketsu.domain.order.Order;
 import com.thoughtworks.ketsu.domain.user.User;
 import com.thoughtworks.ketsu.support.ApiSupport;
 import com.thoughtworks.ketsu.support.ApiTestRunner;
+import com.thoughtworks.ketsu.support.TestHelper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.ws.rs.core.Response;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
@@ -51,5 +54,33 @@ public class OrdersApiTest extends ApiSupport {
         assertThat(response.getStatus(), is(200));
         Map<String, Object> map = response.readEntity(Map.class);
         assertThat(map.get("uri").toString().contains("/users/1/orders/1"), is(true));
+    }
+
+    @Test
+    public void should_return_201_and_uri_when_create_order() throws Exception {
+        Order order = new Order(1, user);
+        when(orders.createOrder(anyMap(), any(User.class))).thenReturn(order);
+
+        Response response = post("/users/1/orders", TestHelper.orderMap(user));
+        assertThat(response.getStatus(), is(201));
+        assertThat(response.getLocation().toString().contains("/users/1/orders/1"), is(true));
+    }
+
+    @Test
+    public void should_return_400_when_create_order_with_invalid_parameter() throws Exception {
+        Response response = post("/users/1/orders", new HashMap<>());
+
+        assertThat(response.getStatus(), is(400));
+    }
+
+    @Test
+    public void should_return_200_when_get_all_orders_for_user() throws Exception {
+        Order order = new Order(1, user);
+        when(orders.getOrdersForUser(any(User.class))).thenReturn(asList(order));
+
+        Response response = get("/users/1/orders");
+        assertThat(response.getStatus(), is(200));
+        List<Map> list = response.readEntity(List.class);
+        assertThat(list.size(), is(1));
     }
 }

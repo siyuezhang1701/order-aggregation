@@ -3,18 +3,18 @@
 <!--<mapper namespace="com.thoughtworks.ketsu.infrastructure.mybatis.mappers.UserMapper">-->
     <!--<insert id="save">-->
         <!--INSERT INTO users (id, name, email, role, password)-->
-        <!--VALUES (#{user.userId.id}, #{user.name}, #{user.email}, #{user.role},  #{user.password})-->
+        <!--VALUES (#{owner.userId.id}, #{owner.name}, #{owner.email}, #{owner.role},  #{owner.password})-->
     <!--</insert>-->
 
-    <!--<select id="ofId" resultMap="records.user">-->
+    <!--<select id="ofId" resultMap="records.owner">-->
         <!--SELECT-->
-          <!--<include refid="columns.user"/>-->
+          <!--<include refid="columns.owner"/>-->
         <!--FROM users U-->
         <!--WHERE U.id = #{id}-->
     <!--</select>-->
-    <!--<select id="findByUserName" resultMap="records.user">-->
+    <!--<select id="findByUserName" resultMap="records.owner">-->
         <!--SELECT-->
-        <!--<include refid="columns.user"/>-->
+        <!--<include refid="columns.owner"/>-->
         <!--FROM users U-->
         <!--WHERE U.name = #{userName}-->
     <!--</select>-->

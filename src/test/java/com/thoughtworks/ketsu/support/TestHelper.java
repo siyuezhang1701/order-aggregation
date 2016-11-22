@@ -1,5 +1,8 @@
 package com.thoughtworks.ketsu.support;
 
+import com.thoughtworks.ketsu.domain.user.User;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +24,17 @@ public class TestHelper {
     public static Map<String, Object> productPriceMap(double price) {
         return new HashMap<String, Object>(){{
             put("price", price);
+        }};
+    }
+
+    public static Map<String, Object> orderMap(User owner){
+        return new HashMap<String, Object>(){{
+            put("items", new ArrayList<Map<String, Object>>(){{
+                add(new HashMap<String, Object>(){{
+                    put("products", "1");
+                    put("quantity", 2);
+                }});
+            }});
         }};
     }
 }

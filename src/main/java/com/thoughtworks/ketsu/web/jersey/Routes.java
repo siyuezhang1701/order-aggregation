@@ -24,7 +24,7 @@ public class Routes {
         return URI.create(String.format("%susers/%s/products/%s", baseUri, user.getId(), product.getId()));
     }
 
-    public Object orderUrl(User user, Order order) {
+    public URI orderUrl(User user, Order order) {
         return URI.create(String.format("%susers/%s/orders/%s", baseUri, user.getId(), order.getId()));
 
     }

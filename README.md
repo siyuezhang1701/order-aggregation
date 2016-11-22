@@ -21,3 +21,9 @@
 - /users/{uid}/orders/{oid} get  not found 404 -7min 5min
                                  success 200   -7min 4min
                                  
+- /users/{uid}/orders  post success 201 -7min 5min
+                            invalid parameter 400 -5min 3min
+                            
+- /users/{uid}/orders   get success 200 -5min 4min
+
+- /users/{uid}/orders/{oid}/payment get not found 404
