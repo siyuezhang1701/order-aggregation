@@ -1,6 +1,7 @@
 package com.thoughtworks.ketsu.support;
 
 import com.thoughtworks.ketsu.domain.CurrentUser;
+import com.thoughtworks.ketsu.domain.order.Orders;
 import com.thoughtworks.ketsu.domain.user.Users;
 import com.thoughtworks.ketsu.util.Json;
 import com.thoughtworks.ketsu.web.UsersApi;
@@ -57,6 +58,7 @@ public class ApiSupport {
     protected String token = "";
 
     protected Users users = mock(Users.class);
+    protected Orders orders = mock(Orders.class);
     protected CurrentUser currentUser = mock(CurrentUser.class);
 
 
@@ -75,6 +77,7 @@ public class ApiSupport {
                             @Override
                             protected void configure() {
                                 bind(users).to(Users.class);
+                                bind(orders).to(Orders.class);
                                 bind(currentUser).to(CurrentUser.class);
                             }
                         });

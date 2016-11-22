@@ -1,27 +1,22 @@
-package com.thoughtworks.ketsu.domain.product;
+package com.thoughtworks.ketsu.domain.order;
 
 import com.thoughtworks.ketsu.domain.user.User;
 import com.thoughtworks.ketsu.infrastructure.records.Record;
 import com.thoughtworks.ketsu.web.jersey.Routes;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Product implements Record{
+public class Order implements Record{
     private long id;
-    private String name;
-    private List<ProductPrice> priceHistory;
+    private List<OrderItem> orderItems;
+    private double totalPrice;
     private User owner;
 
-    public Product(long id, String name, double price, User owner) {
+    public Order(long id, User owner) {
         this.id = id;
-        this.name = name;
         this.owner = owner;
-        priceHistory = new ArrayList<ProductPrice>(){{
-            add(new ProductPrice(0, price));
-        }};
     }
 
     @Override
@@ -32,16 +27,12 @@ public class Product implements Record{
     @Override
     public Map<String, Object> toJson(Routes routes) {
         return new HashMap<String, Object>(){{
-            put("uri", routes.productUrl(owner, Product.this));
-            put("id", id);
-            put("price", priceHistory.get(priceHistory.size() - 1).getPrice());
+            put("uri", routes.orderUrl(owner, Order.this));
+            put("total", totalPrice);
         }};
     }
 
     public long getId() {
         return id;
-    }
-
-    public void changePrice(double price){
     }
 }

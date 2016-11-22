@@ -10,4 +10,17 @@ public class TestHelper {
             put("password", password);
         }};
     }
+
+    public static Map<String, Object> productMap(String name) {
+        return new HashMap<String, Object>() {{
+            put("name", name);
+            put("price", 10);
+        }};
+    }
+
+    public static Map<String, Object> productPriceMap(double price) {
+        return new HashMap<String, Object>(){{
+            put("price", price);
+        }};
+    }
 }

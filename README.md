@@ -8,4 +8,16 @@
                      invalid parameter 400 -7min 7min
                      email has been taken 400 -5min 10min
                      
-- /users/{uid}/products/{pid} get not found 404 -7min
+- /users/{uid}/products/{pid} get not found 404 -7min 10min
+                              get success 200 -7min 5min
+                             
+- /users/{uid}/products  post success 201 -7min 10min
+                         invalid parameter 400 -7min 5min
+                         get success 200 -7min 5min     
+                         
+- /users/{uid}/products/{pid} post change price success 200 -7min 5min
+                                                invalid parameter 400 -5min 3min
+                               
+- /users/{uid}/orders/{oid} get  not found 404 -7min 5min
+                                 success 200   -7min 4min
+                                 

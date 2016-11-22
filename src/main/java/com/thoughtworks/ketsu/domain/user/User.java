@@ -1,22 +1,25 @@
 package com.thoughtworks.ketsu.domain.user;
 
+import com.thoughtworks.ketsu.domain.product.Product;
 import com.thoughtworks.ketsu.infrastructure.records.Record;
 import com.thoughtworks.ketsu.web.jersey.Routes;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class User implements Record {
-    public long getId() {
-        return id;
-    }
-
     private long id;
     private String email;
 
     public User(long id, String email) {
         this.id = id;
         this.email = email;
+    }
+
+    public long getId() {
+        return id;
     }
 
     @Override
@@ -31,5 +34,21 @@ public class User implements Record {
             put("id", id);
             put("email", email);
         }};
+    }
+
+    public Optional<Product> findProductById(long id){
+        return null;
+    }
+
+    public Product createProduct(Map<String, Object> info){
+        return null;
+    }
+
+    public List<Product> getAllProductsForUser(){
+        return null;
+    }
+
+    public void changeProductPrice(Product product, double price){
+        product.changePrice(price);
     }
 }

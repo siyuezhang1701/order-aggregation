@@ -26,9 +26,12 @@ public class UsersApi {
 
         Validator userValidator =
                 all(fieldNotEmpty("email", "email is required"),
-                        fieldNotEmpty("password", "password is required"),
-                        unique("email", "email has been taken", users)
+                        fieldNotEmpty("password", "password is required")
                 );
+
+        validate(userValidator, info);
+
+        userValidator = all(unique("email", "email has been taken", users));
 
         validate(userValidator, info);
         User user = users.createUser(info);
