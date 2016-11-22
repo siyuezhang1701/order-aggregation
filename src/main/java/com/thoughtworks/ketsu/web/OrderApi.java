@@ -3,6 +3,7 @@ package com.thoughtworks.ketsu.web;
 import com.sun.org.apache.xpath.internal.operations.Or;
 import com.thoughtworks.ketsu.domain.order.Order;
 import com.thoughtworks.ketsu.domain.order.Payment;
+import com.thoughtworks.ketsu.domain.order.RefundRequest;
 import com.thoughtworks.ketsu.domain.user.User;
 import com.thoughtworks.ketsu.web.jersey.Routes;
 
@@ -48,5 +49,16 @@ public class OrderApi {
         Payment payment = order.createPayment(info);
 
         return Response.status(201).location(routes.paymentUrl(order)).build();
+    }
+
+    @GET
+    @Path("refundRequests/{requestId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public RefundRequest findRefundRequest(@PathParam("requestId")long requestId){
+        Optional<RefundRequest> refundRequest = order.findRefundRequest(requestId);
+
+        if(!refundRequest.isPresent())
+            throw new NotFoundException("refund request not exist");
+        return refundRequest.get();
     }
 }

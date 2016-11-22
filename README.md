@@ -31,4 +31,8 @@
                                         
 - /users/{uid}/orders/{oid}/payment post success 201 -5min  5min
 
+-/users/{uid}/orders/{oid}/refundRequest/{requestId} get not found 404 -5min 5min
+                                                         success 200 -5min 4min
+                                                         
+
 

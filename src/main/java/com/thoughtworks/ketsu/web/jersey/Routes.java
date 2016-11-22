@@ -3,6 +3,7 @@ package com.thoughtworks.ketsu.web.jersey;
 
 import com.thoughtworks.ketsu.domain.order.Order;
 import com.thoughtworks.ketsu.domain.order.Payment;
+import com.thoughtworks.ketsu.domain.order.RefundRequest;
 import com.thoughtworks.ketsu.domain.product.Product;
 import com.thoughtworks.ketsu.domain.user.User;
 
@@ -34,5 +35,9 @@ public class Routes {
     public URI paymentUrl(Order order) {
         return URI.create(String.format("%susers/%s/orders/%s/payment", baseUri, order.getOwner().getId(), order.getId()));
 
+    }
+
+    public URI refundRequestURL(RefundRequest refundRequest) {
+        return URI.create(String.format("%susers/%s/orders/%s/refundRequests/%s", baseUri, refundRequest.getOrder().getOwner().getId(), refundRequest.getOrder().getId(), refundRequest.getId()));
     }
 }

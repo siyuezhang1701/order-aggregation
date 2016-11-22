@@ -50,4 +50,8 @@ public class Order implements Record{
     public Payment createPayment(Map<String, Object>info){
         return null;
     }
+
+    public Optional<RefundRequest> findRefundRequest(long requsetId){
+        return null;
+    }
 }
