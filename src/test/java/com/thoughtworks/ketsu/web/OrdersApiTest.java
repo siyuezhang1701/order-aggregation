@@ -2,6 +2,7 @@ package com.thoughtworks.ketsu.web;
 
 import com.thoughtworks.ketsu.domain.order.Order;
 import com.thoughtworks.ketsu.domain.order.Payment;
+import com.thoughtworks.ketsu.domain.order.Refund;
 import com.thoughtworks.ketsu.domain.order.RefundRequest;
 import com.thoughtworks.ketsu.domain.user.User;
 import com.thoughtworks.ketsu.support.ApiSupport;
@@ -150,7 +151,7 @@ public class OrdersApiTest extends ApiSupport {
         when(orders.findById(anyInt())).thenReturn(Optional.of(mockOrder));
         when(mockOrder.createRefundRequest(anyMap(), any(Order.class))).thenReturn(refundRequest);
 
-        Response response = post("/users/1/orders/1/refundRequests", TestHelper.refundRequest());
+        Response response = post("/users/1/orders/1/refundRequests", TestHelper.refundRequestMap());
         assertThat(response.getStatus(), is(201));
         assertThat(response.getLocation().toString().contains("/users/1/orders/1/refundRequests/1"), is(true));
     }
@@ -161,5 +162,59 @@ public class OrdersApiTest extends ApiSupport {
 
         Response response = post("/users/1/orders/1/refundRequests", new HashMap<>());
         assertThat(response.getStatus(), is(400));
+    }
+
+    @Test
+    public void should_return_404_when_not_find_refund() throws Exception {
+        when(orders.findById(anyInt())).thenReturn(Optional.of(mockOrder));
+        when(mockOrder.findRefund(anyInt())).thenReturn(Optional.empty());
+
+        Response response = get("/users/1/orders/1/refunds/1");
+        assertThat(response.getStatus(), is(404));
+    }
+
+    @Test
+    public void should_return_detailR_when_Rfind_refund() throws Exception {
+        Refund refund = new Refund(mockOrder, 1);
+        when(orders.findById(anyInt())).thenReturn(Optional.of(mockOrder));
+        when(mockOrder.findRefund(anyInt())).thenReturn(Optional.of(refund));
+        when(mockOrder.getOwner()).thenReturn(user);
+
+        Response response = get("/users/1/orders/1/refunds/1");
+        assertThat(response.getStatus(), is(200));
+        Map<String, Object> map = response.readEntity(Map.class);
+        assertThat(map.get("uri").toString().contains("/users/1/orders/1/refunds/1"), is(true));
+    }
+
+    @Test
+    public void should_return_201_when_create_refund() throws Exception {
+        Refund refund = new Refund(mockOrder, 1);
+        when(orders.findById(anyInt())).thenReturn(Optional.of(mockOrder));
+        when(mockOrder.createRefund(anyMap(), any(Order.class))).thenReturn(refund);
+        when(mockOrder.getOwner()).thenReturn(user);
+
+        Response response = post("/users/1/orders/1/refunds", TestHelper.refundMap());
+        assertThat(response.getStatus(), is(201));
+        assertThat(response.getLocation().toString().contains("/users/1/orders/1/refunds/1"), is(true));
+    }
+
+    @Test
+    public void should_return_400_when_create_refund_with_invalid_parameter() throws Exception {
+        when(orders.findById(anyInt())).thenReturn(Optional.of(mockOrder));
+
+        Response response = post("/users/1/orders/1/refunds", new HashMap<>());
+        assertThat(response.getStatus(), is(400));
+    }
+
+    @Test
+    public void should_return_detail_when_find_refunds_for_order() throws Exception {
+        Refund refund = new Refund(mockOrder, 1);
+        when(orders.findById(anyInt())).thenReturn(Optional.of(mockOrder));
+        when(mockOrder.getAllRefunds()).thenReturn(asList(refund));
+
+        Response response = get("/users/1/orders/1/refunds");
+        assertThat(response.getStatus(), is(200));
+        List<Map> list = response.readEntity(List.class);
+        assertThat(list.size(), is(1));
     }
 }

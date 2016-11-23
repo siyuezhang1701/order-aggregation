@@ -14,7 +14,6 @@ public class Order implements Record{
     private List<OrderItem> orderItems;
     private double totalPrice;
     private User owner;
-    private Payment payment;
 
     public Order(long id, User owner) {
         this.id = id;
@@ -56,6 +55,18 @@ public class Order implements Record{
     }
 
     public RefundRequest createRefundRequest(Map<String, Object>info, Order order){
+        return null;
+    }
+
+    public Optional<Refund> findRefund(long refundId){
+        return null;
+    }
+
+    public Refund createRefund(Map<String, Object>info, Order order){
+        return null;
+    }
+
+    public List<Refund> getAllRefunds() {
         return null;
     }
 }

@@ -38,8 +38,20 @@ public class TestHelper {
         }};
     }
 
-    public static Map<String, Object> refundRequest(){
+    public static Map<String, Object> refundRequestMap(){
         return new HashMap<String, Object>(){{
+            put("items", new ArrayList<Map<String, Object>>(){{
+                add(new HashMap<String, Object>(){{
+                    put("products", "1");
+                    put("quantity", 2);
+                }});
+            }});
+        }};
+    }
+
+    public static Map<String, Object> refundMap(){
+        return new HashMap<String, Object>(){{
+            put("refundRequest", "1");
             put("items", new ArrayList<Map<String, Object>>(){{
                 add(new HashMap<String, Object>(){{
                     put("products", "1");
