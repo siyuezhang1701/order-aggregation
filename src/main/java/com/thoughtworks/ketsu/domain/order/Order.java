@@ -69,4 +69,8 @@ public class Order implements Record{
     public List<Refund> getAllRefunds() {
         return null;
     }
+
+    public List<RefundRequest> getAllRefundRequests() {
+        return null;
+    }
 }

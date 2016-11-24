@@ -5,7 +5,7 @@ import com.thoughtworks.ketsu.util.Uniqueness;
 import java.util.Map;
 import java.util.Optional;
 
-public interface Users extends Uniqueness{
+public interface Users extends Uniqueness<User, String>{
 
     Optional<User> findById(long id);
 

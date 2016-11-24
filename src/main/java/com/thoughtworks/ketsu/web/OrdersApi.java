@@ -49,6 +49,8 @@ public class OrdersApi {
     @Path("{oid}")
     public OrderApi getOrderApi(@PathParam("oid") long oid,
                                 @Context Orders orders){
+
+//        Order order = owner.getOrders().findBy(oid);
         Optional<Order> order = orders.findById(oid);
 
         if(!order.isPresent())

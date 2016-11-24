@@ -119,4 +119,11 @@ public class OrderApi {
     public List<Refund> createRefund() {
         return order.getAllRefunds();
     }
+
+    @GET
+    @Path("refundRequests")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<RefundRequest> createRefundRequests() {
+        return order.getAllRefundRequests();
+    }
 }

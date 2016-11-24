@@ -32,9 +32,9 @@ public class Validators {
         return (info) -> info.getOrDefault(name, "").toString().trim().isEmpty() ? Optional.of(message) : Optional.empty();
     }
 
-    public static <Entity, Key> Validator unique(String field, String message,Uniqueness<Entity> range) {
+    public static <Entity, Key> Validator unique(String field, String message,Uniqueness<Entity, Key> range) {
         return (info) -> {
-            if (range.findBy(info.get(field).toString()).isPresent())
+            if (range.findBy((Key) info.get(field)).isPresent())
                 return Optional.of(message);
             return Optional.empty();
         };

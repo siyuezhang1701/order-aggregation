@@ -217,4 +217,16 @@ public class OrdersApiTest extends ApiSupport {
         List<Map> list = response.readEntity(List.class);
         assertThat(list.size(), is(1));
     }
+
+    @Test
+    public void should_return_detail_when_find_refund_requests_for_order() throws Exception {
+        RefundRequest refundRequest = new RefundRequest(1, mockOrder);
+        when(orders.findById(anyInt())).thenReturn(Optional.of(mockOrder));
+        when(mockOrder.getAllRefundRequests()).thenReturn(asList(refundRequest));
+
+        Response response = get("/users/1/orders/1/refundRequests");
+        assertThat(response.getStatus(), is(200));
+        List<Map> list = response.readEntity(List.class);
+        assertThat(list.size(), is(1));
+    }
 }

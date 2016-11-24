@@ -1,5 +1,7 @@
 package com.thoughtworks.ketsu.domain.user;
 
+import com.thoughtworks.ketsu.domain.Aggregation;
+import com.thoughtworks.ketsu.domain.order.Order;
 import com.thoughtworks.ketsu.domain.product.Product;
 import com.thoughtworks.ketsu.infrastructure.records.Record;
 import com.thoughtworks.ketsu.web.jersey.Routes;
@@ -13,6 +15,8 @@ public class User implements Record {
     private long id;
     private String email;
 
+    private Aggregation<Order> orders;
+
     public User(long id, String email) {
         this.id = id;
         this.email = email;
@@ -20,6 +24,10 @@ public class User implements Record {
 
     public long getId() {
         return id;
+    }
+
+    public Aggregation<Order> getOrders() {
+        return orders;
     }
 
     @Override
